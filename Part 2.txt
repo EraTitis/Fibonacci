@@ -1,0 +1,48 @@
+1. Changes that need to be done if the app has a UI (web app in this example):
+    - Create a web app.
+    - Register the INumberFrequencyService as a singleton.
+    - Register the IFibonacciService as a transient.
+    - Create a RESTful API in the web app for to expose the logic so it can be reused for the UI:
+        a. GET /api/fibonacci/{number} which returns the FibonacciNumber model as follow:
+            { 
+                "number": 10,
+                "isFibonacci": true
+            }
+        b. POST /api/frequencies/{number} which returns the NumberFrequency model as follows:
+            {
+                "number": 10,
+                "frequency": 1
+            }
+            The frequency returns will increment for the same number that's POST-ed.
+        c. GET /api/frequencies which returns the sorted collection of NumberFrequency model as follows:
+            [
+                {
+                    "number": 10,
+                    "frequency": 2
+                },
+                {
+                    "number": 5,
+                    "frequency": 1
+                }
+            ]
+    - The library Fibonacci.Api can be reused as-is in the RESTful API.
+    - The UI will have an input field to enter the number of seconds.
+    - The UI will also have a timer configured with the given number of seconds that provides a callback when the time has elapsed, which will make a call to GET /api/frequencies and display its values.
+    - An input field to enter and submit the number to POST /api/frequencies/{number}. The input field value can be automatically reset after successful submission so the user can enter another one.
+    - There will also be buttons to halt and resume the timer.
+
+2. Steps to make it production ready:
+    - Add some logging for the handled and unhandled exceptions
+    - Add unit and integration tests for both the backend and UI
+    - Create an integrated CI pipeline that will:
+        a. build the solution
+        b. run the tests on every push/commit (the frequency will depend on the branching strategy being used, happy to discuss further)
+        c. package the artifact or the outputs of the build to the configured location
+    - Set up environment variables for the target environment
+    - Create an integrated CD pipeline that will:
+        a. consume the build artifact from the configured location
+        b. deploy the application to the target environment
+    - Set up monitoring that monitors the API and UI usage
+
+3. I think the coding test itself is good since it's simple enough to understand and doesn't consume too much time of the candidate yet still allows to show the candidate's understanding of SOLID principles and issues that may come up from doing things in parallel.
+   My suggestion is to use the Part 2 as a medium for a discussion since it will be interesting to see the thought process and reasoning of the candidate as well as the interviewer, so both parties can see and get a glimpse of experience on how it's going to be like to work together. Software development is mostly about solving a problem, and big part of it is the discussion/collaboration to find the best way to solve it so to be able to exchange ideas is always a good thing.
